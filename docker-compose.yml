@@ -1,0 +1,36 @@
+version: '3.3'
+services:
+  backend:
+    container_name: moviereservbackend
+    build:
+      context: ./
+      dockerfile: backend.Dockerfile
+    environment:
+      - GRIDDB_NOTIFICATION_MEMBER=db:10001
+      - GRIDDB_CLUSTER_NAME=dockerGridDB
+      - GRIDDB_USER=admin
+      - GRIDDB_PASSWORD=admin
+      - spring.thymeleaf.prefix=classpath:/templates/
+    ports:
+      - 8080:8080
+      - 35729:35729
+      - 5005:5005
+    networks:
+      - movieresv-net
+    depends_on:
+      - db
+  db:
+    container_name: movieresvdb
+    image: griddb/griddb:5.6.0-jammy
+    volumes:
+      - movieresvdb-vol:/var/lib/gridstore
+    ports:
+      - 10001:10001
+      - 20001:20001
+    networks:
+      - movieresv-net
+
+networks:
+  movieresv-net:
+volumes:
+  movieresvdb-vol:

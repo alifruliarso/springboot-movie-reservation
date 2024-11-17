@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title>[[#{show.list.headline}]]</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 class="flex-grow-1">[[#{show.list.headline}]]</h1>
+                <div>
+                    <a th:href="@{/shows/add/{movieId}(movieId=${movieId})}" class="btn btn-primary ms-2">[[#{show.list.createNew}]]</a>
+                </div>
+            </div>
+            <div th:if="${shows.empty}">[[#{show.list.empty}]]</div>
+            <div th:if="${!shows.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th scope="col">[[#{show.movie.label}]]</th>
+                            <th scope="col">[[#{show.startTime.label}]]</th>
+                            <th scope="col">[[#{show.endTime.label}]]</th>
+                            <th scope="col">[[#{show.price.label}]]</th>
+                            <th scope="col">[[#{show.totalSeats.label}]]</th>
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="show : ${shows}">
+                            <td>[[${show.movie.title}]]</td>
+                            <td>[[${show.startTime}]]</td>
+                            <td>[[${show.endTime}]]</td>
+                            <td>[[${show.price}]]</td>
+                            <td>[[${show.totalSeats}]]</td>
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/reservations/reserved/{showId}(showId=${show.id})}" class="btn btn-sm btn-primary">[[#{show.list.reserved}]]</a>
+                                    <a th:href="@{/shows/edit/{id}(id=${show.id})}" class="btn btn-sm btn-secondary">[[#{show.list.edit}]]</a>
+                                    <form th:action="@{/shows/delete/{id}(id=${show.id})}"
+                                            th:data-confirm-message="#{delete.confirm}" method="post" class="js-submit-confirm d-inline">
+                                        <button type="submit" class="btn btn-sm btn-secondary">[[#{show.list.delete}]]</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

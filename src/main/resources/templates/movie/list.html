@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title>[[#{movie.list.headline}]]</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 class="flex-grow-1">[[#{movie.list.headline}]]</h1>
+                <div>
+                    <a th:href="@{/movies/add}" class="btn btn-primary ms-2">[[#{movie.list.createNew}]]</a>
+                </div>
+            </div>
+            <div th:if="${movies.empty}">[[#{movie.list.empty}]]</div>
+            <div th:if="${!movies.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th scope="col">[[#{movie.title.label}]]</th>
+                            <th scope="col">[[#{movie.genre.label}]]</th>
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="movie : ${movies}">
+                            <td>[[${movie.title}]]</td>
+                            <td>[[${movie.genre}]]</td>
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/shows/movie/{movieId}(movieId=${movie.id})}" class="btn btn-sm btn-primary">[[#{movie.list.show}]]</a>
+                                    <a th:href="@{/movies/edit/{id}(id=${movie.id})}" class="btn btn-sm btn-secondary">[[#{movie.list.edit}]]</a>
+                                    <form th:action="@{/movies/delete/{id}(id=${movie.id})}"
+                                            th:data-confirm-message="#{delete.confirm}" method="post" class="js-submit-confirm d-inline">
+                                        <button type="submit" class="btn btn-sm btn-secondary">[[#{movie.list.delete}]]</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

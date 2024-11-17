@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title>[[#{reservation.add.headline}]]</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 class="flex-grow-1">[[#{reservation.add.headline}]]</h1>
+                <div>
+                    <a th:href="@{/shows}" class="btn btn-secondary">[[#{reservation.add.back}]]</a>
+                </div>
+            </div>
+            <div th:replace="~{fragments/forms::globalErrors('reservation')}" />
+            <form th:action="@{/reservations/add}" method="post">
+                <input type="hidden" th:value="${reservation.userId}" name="userId" />
+                <input type="hidden" th:value="${reservation.showId}" name="showId" />
+                <div class="row mb-3">
+                    <label class="col-md-2 col-form-label">
+                        <span>User</span>
+                    </label>
+                    <div class="col-md-10">
+                        <span th:text="${reservation.user.name}"></span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-md-2 col-form-label">
+                        <span>Movie</span>
+                    </label>
+                    <div class="col-md-10">
+                        <span th:text="${reservation.movie.title}"></span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-md-2 col-form-label">
+                        <span>Base Price</span>
+                    </label>
+                    <div class="col-md-10">
+                        <span th:text="${reservation.show.price}"></span>
+                    </div>
+                </div>
+                <!-- <div class="row mb-3">
+                    <label for="numberOfSeats" class="col-md-2 col-form-label">
+                        <span>Number of Seat</span>
+                    </label>
+                    <div class="col-md-1">
+                        <input type="number" step="1" min="1" class="form-control" id="numberOfSeats"
+                        th:name="numberOfSeats"
+                        value="1"
+                        onchange="calculateTotalPrice()">
+                    </div>
+                </div> -->
+                <div class="row mb-3">
+                    <label for="seats" class="col-md-2 col-form-label">
+                        <span>Seats</span>
+                    </label>
+                    <div class="col-md-1">
+                        <ul class="list-group list-group-horizontal">
+                            <li class="list-group-item" th:each="seat : ${reservation.show.seats}">
+                                <div class="form-check form-check-inline" th:classappend="${seat.available} ? 'bg-light' : 'bg-danger' ">
+                                    <input class="form-check-input" type="checkbox" name="selectedSeats" th:value="${seat.id}" th:disabled="${not seat.available}">
+                                    <label class="form-check-label" th:text="${seat.seatNumber}"></label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <input type="submit" th:value="#{button.save}" class="btn btn-primary mt-4" />
+                <!-- <div class="row mb-3"></div>
+                    <label for="totalPrice" class="col-md-2 col-form-label">
+                        <span>Total Price</span>
+                    </label>
+                    <div class="col-md-1">
+                        <input type="number" class="form-control" id="totalPrice"
+                        th:name="totalPrice"
+                        value="1">
+                    </div>
+                </div> -->
+                <!-- <div th:replace="~{fragments/forms::inputRow(object='reservation', field='totalPrice', required=true, disabled=true)}" /> -->                
+            </form>
+            <script th:inline="javascript">
+                /*<![CDATA[*/                
+                function calculateTotalPrice() {
+                    var basePrice = /*[[${reservation.show.price}]]*/999999;
+                    var numberOfSeats = document.getElementById("numberOfSeats").value;
+                    var totalPrice = basePrice * numberOfSeats;
+                    document.getElementById("totalPrice").value = totalPrice;
+                }
+                $(function() { calculateTotalPrice(); });
+                /*]]>*/
+            </script>
+        </div>
+    </body>
+</html>
