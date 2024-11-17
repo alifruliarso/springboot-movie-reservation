@@ -24,6 +24,8 @@ docker compose up --build
 * [Learn Spring Boot with Thymeleaf](https://www.wimdeblauwe.com/books/taming-thymeleaf/)  
 * [Bootify.io](https://bootify.io/next-steps/)
 * [JEP 310: Application Class-Data Sharing](https://openjdk.org/jeps/310)
+* [Unpacking the Executable jar](https://docs.spring.io/spring-boot/reference/packaging/efficient.html)
+* [Efficient Container Images, Layering Docker Images](https://docs.spring.io/spring-boot/reference/packaging/container-images/efficient-images.html)
 
 
 ### Helpful commands
